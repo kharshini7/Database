@@ -1,0 +1,34 @@
+#question 5
+select a1.Account_no,a1.acc_type,a2.Balance as Bank_Balance,a3.amount-(sum(a4.Amount)) as Outstanding_Loan_Amount,a5.amount as loan_amt
+from Account_Type a1 
+join account a2 on a1.Account_no=a2.Account_no
+join loan a3 on a2.Account_no=a3.Account_no
+join loan a5 on a2.account_no=a5.account_no
+join Payments a4 on a3.loan_id=a4.loan_id where a2.B_name='hayathnagar'
+
+
+#question 6.1
+create trigger check_overdraft
+after insert on overdrafcheck
+for each row
+begin 
+if new.Trans_amount>overdrafts then
+insert into message 
+values( concat(new.Account_no," ","Hey recent transaction has exceeded his overdraft amount"));
+end if;
+end//
+Delimiter ;
+
+
+
+
+#question 6.2
+create trigger Wish_employee
+BEFORE INSERT ON Employee
+for each row 
+BEGIN
+ if TIMESTAMPDIFF(YEAR,startdate,CURDATE())=10
+ then
+ DBMS_OUTPUT.PUT_LINE('Congratulations')
+end if
+end;
